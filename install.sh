@@ -3,7 +3,7 @@
 sys_a=""
 distro="$(cat /etc/os-release | grep ID_LIKE | cut -d"=" -f 2)"
 #manager_or_balancer_ip="10.62.6.25"
-manager_or_balancer_ip="172.26.26.246"
+manager_or_balancer_ip="your wazuh manager ip here"
 
 
 
