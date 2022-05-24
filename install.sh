@@ -3,15 +3,17 @@
 sys_a=""
 distro="$(cat /etc/os-release | grep ID_LIKE | cut -d"=" -f 2)"
 #manager_or_balancer_ip="10.62.6.25"
-manager_or_balancer_ip="your wazuh manager ip here"
+manager_or_balancer_ip="172.26.26.246"
 
 
 
-apt-get update
-apt-get install curl -y
+
 
 if [[ $distro  ==  "debian" || $distro  ==  "ubuntu" ]]; then
-    
+
+    apt-get update
+    apt-get install curl -y
+
     #set cpu archhitecture
     if [[ $(arch)  ==  "x86_64" ]]; then
         sys_a="amd64"
@@ -36,6 +38,9 @@ if [[ $distro  ==  "debian" || $distro  ==  "ubuntu" ]]; then
 
 elif [[ $distro  !=  "debian" || $distro  !=  "ubuntu" ]]; then
 
+    yum -y check-update
+    yum -y install curl
+
     #set cpu archhitecture
     if [[ $(arch)  ==  "armhf" ]]; then
         sys_a="armv7hl"
@@ -44,7 +49,7 @@ elif [[ $distro  !=  "debian" || $distro  !=  "ubuntu" ]]; then
     fi
     #set cpu archhitecture
     
-    sudo WAZUH_MANAGER="$manager_or_balancer_ip" yum install "https://packages.wazuh.com/4.x/yum/wazuh-agent-4.2.6-1.$sys_a.rpm"
+    sudo WAZUH_MANAGER="$manager_or_balancer_ip" yum -y install "https://packages.wazuh.com/4.x/yum/wazuh-agent-4.2.6-1.$sys_a.rpm"
 
     if [[ $(which systemctl) == "/usr/bin/systemctl" ]]; then
         sudo systemctl daemon-reload
